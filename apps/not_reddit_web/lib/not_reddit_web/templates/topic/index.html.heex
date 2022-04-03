@@ -1,10 +1,14 @@
-<section class="row">
-  <article class="column">
-    <h2>Topic home</h2>
-    <ul>
-      <li>
-        <a href="./new">New topic</a>
-      </li>
-    </ul>
-  </article>
-</section>
+
+<h2>Topics</h2>
+<ul class="collection">
+  <%= for topic <- @topics do %>
+    <li class="collection-item">
+      <%= topic.title %>
+    </li>
+  <% end %>
+</ul>
+<div class="fixed-action-btn">
+  <%= link to: Routes.topic_path(@conn, :new), class: "btn-floating btn-large waves-effect waves-light red" do %>
+    <i class="material-icons">add</i>
+  <% end %>
+</div>

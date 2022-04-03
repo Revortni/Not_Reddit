@@ -1,8 +1,12 @@
 defmodule NotRedditWeb.TopicController do
   use NotRedditWeb, :controller
   alias NotReddit.Topic
+  alias NotReddit.Repo
 
   def index(conn, _params) do
+    topics =  Repo.all(Topic)
+    render conn, "index.html", topics: topics
+
     render(conn, "index.html")
   end
 
@@ -12,8 +16,18 @@ defmodule NotRedditWeb.TopicController do
     render conn, "new.html", changeset: changeset
   end
 
-  def create(conn, params) do
-    %{"topic" => %{ "title" => title}} = params
-    IO.puts title
+  def create(conn, %{"topic" => topic}) do
+    changeset = Topic.changeset(%Topic{}, topic)
+
+    case Repo.insert(changeset) do
+      {:ok, post} ->
+        conn
+        |> put_flash(:info, "Topic Created")
+        |> redirect(to: Routes.topic_path(conn, :index))
+      {:error, changeset} ->
+        conn
+        |> put_flash(:error, "Invalid topic name")
+        |> render "new.html", changeset: changeset
+    end
   end
 end
