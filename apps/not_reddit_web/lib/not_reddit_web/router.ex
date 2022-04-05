@@ -25,6 +25,8 @@ defmodule NotRedditWeb.Router do
 
     get "/", TopicController, :index
     get "/new", TopicController, :new
+    get "/:id/edit", TopicController, :edit
+    put "/update/:id", TopicController, :update
     post "/", TopicController, :create
   end
 
