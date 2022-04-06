@@ -23,13 +23,13 @@ defmodule NotRedditWeb.Router do
   scope "/topics", NotRedditWeb do
     pipe_through :browser
 
-    get "/", TopicController, :index
-    get "/new", TopicController, :new
-    get "/:id/edit", TopicController, :edit
-    delete "/:id", TopicController, :delete
-    put "/:id", TopicController, :update
-    post "/", TopicController, :create
-    # resources "/", TopicController
+    # get "/", TopicController, :index
+    # get "/new", TopicController, :new
+    # get "/:id/edit", TopicController, :edit
+    # delete "/:id", TopicController, :delete
+    # put "/:id", TopicController, :update
+    # post "/", TopicController, :create
+    resources "/", TopicController, except: [:show]
   end
 
   # Other scopes may use custom stacks.
