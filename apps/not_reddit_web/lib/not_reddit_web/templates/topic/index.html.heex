@@ -8,6 +8,9 @@
         <%= link to: Routes.topic_path(@conn, :edit, topic) do%>
           <i class="material-icons">edit</i>
         <% end %>
+        <%= link to: Routes.topic_path(@conn, :delete, topic), method: :delete do%>
+          <i class="material-icons">delete</i>
+        <% end %>
       </div>   
     </li>
   <% end %>

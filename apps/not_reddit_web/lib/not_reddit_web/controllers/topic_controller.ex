@@ -52,4 +52,16 @@ defmodule NotRedditWeb.TopicController do
         |> render "edit.html", changeset: changeset, topic: prev_topic
     end
   end
+
+
+  def delete(conn, %{"id"=> topic_id}) do
+    current_topic = Repo.get!(Topic, topic_id)
+    Repo.get!(Topic, topic_id)
+    |> Repo.delete!
+    %{"title": topic_title} = current_topic
+    conn
+    |> put_flash(:info, "Topic \"#{topic_title}\" Deleted")
+    |> redirect(to: Routes.topic_path(conn, :index))
+
+  end
 end
