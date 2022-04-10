@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   app:
-    image: elixir:latest
+    build: .
     container_name: not_reddit
     working_dir: /app
     tty: true

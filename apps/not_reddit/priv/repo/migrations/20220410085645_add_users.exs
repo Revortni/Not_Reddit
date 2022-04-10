@@ -3,8 +3,8 @@ defmodule NotReddit.Repo.Migrations.AddUsers do
 
   def change do
     create table(:users) do
-      add :email. :string
-      add :provider. :string
+      add :email, :string
+      add :provider, :string
       add :token, :string
 
       timestamps()

@@ -8,7 +8,7 @@ config :not_reddit, NotReddit.Repo,
   port: "5431",
   database: "not_reddit_dev",
   show_sensitive_data_on_connection_error: true,
-  pool_size: 20
+  pool_size: 10
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
