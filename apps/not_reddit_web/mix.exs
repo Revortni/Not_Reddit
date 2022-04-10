@@ -24,7 +24,7 @@ defmodule NotRedditWeb.MixProject do
   def application do
     [
       mod: {NotRedditWeb.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :ueberauth, :ueberauth_github]
     ]
   end
 
@@ -50,7 +50,9 @@ defmodule NotRedditWeb.MixProject do
       {:gettext, "~> 0.18"},
       {:not_reddit, in_umbrella: true},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:ueberauth, "~> 0.7"},
+      {:ueberauth_github, "~> 0.7"}
     ]
   end
 

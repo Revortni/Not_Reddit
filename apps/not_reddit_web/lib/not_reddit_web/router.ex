@@ -8,6 +8,7 @@ defmodule NotRedditWeb.Router do
     plug :put_root_layout, {NotRedditWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug Ueberauth
   end
 
   pipeline :api do
@@ -30,6 +31,13 @@ defmodule NotRedditWeb.Router do
     # put "/:id", TopicController, :update
     # post "/", TopicController, :create
     resources "/", TopicController, except: [:show]
+  end
+
+  scope "/auth", NotRedditWeb do
+    pipe_through :browser
+
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
   end
 
   # Other scopes may use custom stacks.

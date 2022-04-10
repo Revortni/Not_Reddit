@@ -7,6 +7,8 @@ services:
     working_dir: /app
     tty: true
     stdin_open: true
+    env_file:
+      - .env
     volumes:
       - ".:/app/"
     ports:
