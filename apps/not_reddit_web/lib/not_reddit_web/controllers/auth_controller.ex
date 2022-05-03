@@ -32,4 +32,10 @@ defmodule NotRedditWeb.AuthController do
         |> redirect(to: Routes.topic_path(conn, :index))
     end
   end
+
+  def signout(conn,__params) do
+    conn
+    |> configure_session(drop: true) ## delete anything to do with user session
+    |> redirect(to: Routes.topic_path(conn,:index))
+  end
 end

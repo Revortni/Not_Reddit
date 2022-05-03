@@ -8,7 +8,7 @@ defmodule NotRedditWeb.Router do
     plug :put_root_layout, {NotRedditWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug Ueberauth
+    plug NotRedditWeb.Plugs.SetUser
   end
 
   pipeline :api do
@@ -30,6 +30,7 @@ defmodule NotRedditWeb.Router do
   scope "/auth", NotRedditWeb do
     pipe_through :browser
 
+    get "/signout", AuthController, :signout
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback
   end
