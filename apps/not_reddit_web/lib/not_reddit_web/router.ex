@@ -18,12 +18,6 @@ defmodule NotRedditWeb.Router do
   scope "/", NotRedditWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
-  end
-
-  scope "/topics", NotRedditWeb do
-    pipe_through :browser
-
     # get "/", TopicController, :index
     # get "/new", TopicController, :new
     # get "/:id/edit", TopicController, :edit
