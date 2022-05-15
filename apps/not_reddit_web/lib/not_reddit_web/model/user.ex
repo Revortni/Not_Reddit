@@ -6,6 +6,7 @@ defmodule NotReddit.User do
     field :provider, :string
     field :token, :string
     has_many :topics, NotReddit.Topic
+    has_many :comments, NotReddit.Comment
 
     timestamps()
   end
