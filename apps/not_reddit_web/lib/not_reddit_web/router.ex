@@ -24,7 +24,8 @@ defmodule NotRedditWeb.Router do
     # delete "/:id", TopicController, :delete
     # put "/:id", TopicController, :update
     # post "/", TopicController, :create
-    resources "/", TopicController, except: [:show]
+    # resources "/", TopicController, except: [:show]
+    resources "/", TopicController
   end
 
   scope "/auth", NotRedditWeb do

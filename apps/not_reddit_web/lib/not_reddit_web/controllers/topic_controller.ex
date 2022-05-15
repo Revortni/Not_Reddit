@@ -2,6 +2,8 @@ defmodule NotRedditWeb.TopicController do
   use NotRedditWeb, :controller
   alias NotReddit.Topic
   alias NotReddit.Repo
+  plug NotRedditWeb.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
+  plug :check_topic_owner when action in [:edit, :update, :delete]
 
   def index(conn, _params) do
     topics =  Repo.all(Topic)
@@ -16,8 +18,16 @@ defmodule NotRedditWeb.TopicController do
     render conn, "new.html", changeset: changeset
   end
 
+  def show(conn, %{"id"=> topic_id}) do
+    topic = Repo.get!(Topic, topic_id)
+    render conn, "show.html", topic: topic
+  end
+
   def create(conn, %{"topic" => topic}) do
     changeset = Topic.changeset(%Topic{}, topic)
+    changeset = conn.assigns[:user]
+    |> Ecto.build_assoc(:topics)
+    |> Topic.changeset(topic)
 
     case Repo.insert(changeset) do
       {:ok, _post} ->
@@ -58,10 +68,22 @@ defmodule NotRedditWeb.TopicController do
     current_topic = Repo.get!(Topic, topic_id)
     Repo.get!(Topic, topic_id)
     |> Repo.delete!
-    %{"title": topic_title} = current_topic
+    %{title: topic_title} = current_topic
     conn
     |> put_flash(:info, "Topic \"#{topic_title}\" Deleted")
     |> redirect(to: Routes.topic_path(conn, :index))
 
+  end
+
+  def check_topic_owner(conn, _params) do
+    %{params: %{"id"=> topic_id}} = conn
+    if Repo.get(Topic, topic_id).user_id == conn.assigns.user.id do
+      conn
+    else
+      conn
+      |> put_flash(:error, "Permission denied")
+      |> redirect(to: Routes.topic_path(conn, :index))
+      |> halt()
+    end
   end
 end

@@ -3,6 +3,7 @@ defmodule NotReddit.Topic do
 
   schema "topics" do
     field :title, :string
+    belongs_to :user, NotReddit.User
   end
 
   def changeset(struct, params \\ %{}) do
