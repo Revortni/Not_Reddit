@@ -1,10 +1,16 @@
 defmodule NotRedditWeb.CommentsChannel do
   use NotRedditWeb, :channel
+  alias NotReddit.{Topic, Comment, Repo}
 
   @impl true
-  def join("comments:lobby", payload, socket) do
+  def join("comments:" <> topic_id, payload, socket) do
+    topic_id = String.to_integer(topic_id)
+    topic = Topic
+    |> Repo.get(topic_id)
+    |> Repo.preload(:comments)
+
     if authorized?(payload) do
-      {:ok, %{hey: "you there"}, socket}
+      {:ok, %{comments: topic.comments}, assign(socket, :topic, topic)}
     else
       {:error, %{reason: "unauthorized"}}
     end
@@ -13,8 +19,18 @@ defmodule NotRedditWeb.CommentsChannel do
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
   @impl true
-  def handle_in("ping", payload, socket) do
-    {:reply, {:ok, payload}, socket}
+  def handle_in(name, %{"content" => content}, socket) do
+    topic = socket.assigns.topic
+    changeset = topic
+    |> Ecto.build_assoc(:comments)
+    |> Comment.changeset(%{content: content})
+
+    case Repo.insert(changeset) do
+      {:ok, comment} ->
+        {:reply, :ok, socket}
+      {:error, _reason} ->
+        {:reply, {:error, %{errors: changeset}}, socket}
+    end
   end
 
   # It is also common to receive messages from the client and
