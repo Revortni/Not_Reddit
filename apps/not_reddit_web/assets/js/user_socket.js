@@ -13,6 +13,10 @@ const createSocket = (topicId)=>{
     .receive("error", (resp) => {
       console.log("Unable to join", resp);
     });
+
+  channel.on(`comments:${topicId}:new`, (event)=>{
+    renderComment(event.comment)
+  })
   
   document.querySelector('#add-comment').addEventListener('click',()=>{
     const content = document.querySelector('#comment-input').value
@@ -21,10 +25,17 @@ const createSocket = (topicId)=>{
 
 }
 
+function commentTemplate(comment){
+  return  `<li class='collection-item'>${comment.content}</li>`
+}
+
+function renderComment(comment){
+  const renderedComment = commentTemplate(comment)
+  document.querySelector('#comment-section').innerHTML += renderedComment
+}
+
 function renderComments(comments){
-  const renderedComments = comments.map((comment)=>{
-    return `<li class='collection-item'>${comment.content}</li>`
-  })
+  const renderedComments = comments.map(comment=>commentTemplate(comment))
 
   document.querySelector('#comment-section').innerHTML = renderedComments.join('')
 }
