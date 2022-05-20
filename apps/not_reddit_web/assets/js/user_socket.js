@@ -26,7 +26,10 @@ const createSocket = (topicId)=>{
 }
 
 function commentTemplate(comment){
-  return  `<li class='collection-item'>${comment.content}</li>`
+  const email = comment.user?.email??'Anonymous'
+
+  return  `<li class='collection-item'>${comment.content} 
+  <span class='secondary-content'>${email}</span></li>`
 }
 
 function renderComment(comment){
@@ -35,6 +38,7 @@ function renderComment(comment){
 }
 
 function renderComments(comments){
+  console.log(comments)
   const renderedComments = comments.map(comment=>commentTemplate(comment))
 
   document.querySelector('#comment-section').innerHTML = renderedComments.join('')

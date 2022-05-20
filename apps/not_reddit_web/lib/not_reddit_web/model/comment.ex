@@ -1,6 +1,6 @@
 defmodule NotReddit.Comment do
   use NotRedditWeb, :model
-  @derive {Jason.Encoder, only: [:content]} # only encode content field
+  @derive {Jason.Encoder, only: [:content, :user]} # only encode content field
 
   schema "comments" do
     field :content, :string

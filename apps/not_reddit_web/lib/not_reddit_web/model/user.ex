@@ -1,5 +1,6 @@
 defmodule NotReddit.User do
   use NotRedditWeb, :model
+  @derive {Jason.Encoder, only: [:email]} # only encode content field
 
   schema "users" do
     field :email, :string
