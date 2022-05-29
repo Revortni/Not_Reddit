@@ -23,8 +23,8 @@ erl_crash.dump
 /tmp
 
 # Env files
-*.env
-*.env.*
+.env
+
 
 /pgdata
 
